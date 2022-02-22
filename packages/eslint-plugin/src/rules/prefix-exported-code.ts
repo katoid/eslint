@@ -1,8 +1,6 @@
-import { ESLintUtils } from '@typescript-eslint/experimental-utils';
+import { createRule } from '../utils/create-eslint-rule';
 
 export const RULE_NAME = 'prefix-exported-code';
-
-const createRule = ESLintUtils.RuleCreator(name => `https://github.com/katoid/eslint/tree/main/docs/rules/${name}.md`);
 
 // Type: RuleModule<"uppercase", ...>
 export const rule = createRule({
@@ -28,6 +26,7 @@ export const rule = createRule({
         function checkExportedName(node: any) {
             const name = getModuleExportName(node);
 
+            // Check if node name starts with the specified prefix. Note that it is case-insensitive.
             if (!name.toLowerCase().startsWith(prefix.toLowerCase())) {
                 context.report({
                     node,
