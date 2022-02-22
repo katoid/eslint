@@ -1,0 +1,78 @@
+{
+    "name": "@katoid/eslint",
+    "version": "0.0.1",
+    "description": "Katoid ESLint",
+    "license": "MIT",
+    "keywords": [
+        "katoid",
+        "eslint",
+        "eslintplugin"
+    ],
+    "bugs": {
+        "url": "https://github.com/katoid/eslint/issues"
+    },
+    "homepage": "https://github.com/katoid/eslint",
+    "engines": {
+        "node": ">=12"
+    },
+    "scripts": {
+        "build": "rimraf packages/eslint-plugin/dist && tsc -d -p packages/eslint-plugin/tsconfig.build.json",
+        "test": "jest",
+        "typecheck": "tsc -p packages/eslint-plugin/tsconfig.build.json",
+        "lint": "eslint --ext js,ts packages/eslint-plugin/src packages/eslint-plugin/tests",
+        "precommit": "lint-staged && npm run typecheck",
+        "prepack": "npm run build",
+        "format": "prettier --write \"packages/**/{src,tests}/**/*.ts\"",
+        "check-format": "prettier --list-different \"packages/**/{src,tests}/**/*.ts\""
+    },
+    "devDependencies": {
+        "@types/eslint": "7.29.0",
+        "@types/jest": "27.0.2",
+        "@types/node": "14.14.25",
+        "@typescript-eslint/experimental-utils": "5.3.1",
+        "@typescript-eslint/parser": "5.3.1",
+        "babel-eslint": "8.2.2",
+        "eslint": "8.1.0",
+        "eslint-config-prettier": "2.9.0",
+        "eslint-plugin-import": "2.25.2",
+        "jest": "27.3.1",
+        "prettier": "2.3.0",
+        "rimraf": "2.6.2",
+        "ts-jest": "27.0.7",
+        "ts-node": "9.1.1",
+        "typescript": "4.5.2"
+    },
+    "prettier": {
+        "printWidth": 100,
+        "trailingComma": "all",
+        "singleQuote": true,
+        "arrowParens": "avoid",
+        "endOfLine": "crlf"
+    },
+    "jest": {
+        "roots": [
+            "packages/eslint-plugin/tests",
+            "packages/eslint-plugin/src"
+        ],
+        "collectCoverageFrom": [
+            "packages/eslint-plugin/src/**/*.ts"
+        ],
+        "globals": {
+            "ts-jest": {
+                "babelConfig": false,
+                "tsconfig": "<rootDir>/tsconfig.test.json"
+            }
+        },
+        "moduleFileExtensions": [
+            "ts",
+            "js",
+            "json"
+        ],
+        "transform": {
+            "^.+\\.ts$": "ts-jest"
+        },
+        "testMatch": [
+            "<rootDir>/packages/**/tests/**/*.test.ts"
+        ]
+    }
+}

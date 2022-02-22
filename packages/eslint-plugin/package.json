@@ -1,0 +1,22 @@
+{
+    "name": "@katoid/eslint-plugin",
+    "version": "0.0.1",
+    "description": "Katoid ESLint plugin rules and configuration",
+    "license": "MIT",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/katoid/eslint.git",
+        "directory": "packages/eslint-plugin"
+    },
+    "files": [
+        "dist",
+        "package.json",
+        "README.md",
+        "LICENSE"
+    ],
+    "peerDependencies": {
+        "eslint": "^7.0.0 || ^8.0.0"
+    }
+}
