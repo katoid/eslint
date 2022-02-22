@@ -1,6 +1,6 @@
 {
     "name": "@katoid/eslint-plugin",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Katoid ESLint plugin rules and configuration",
     "license": "MIT",
     "main": "dist/index.js",
