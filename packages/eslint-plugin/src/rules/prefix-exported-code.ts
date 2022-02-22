@@ -2,7 +2,7 @@ import { ESLintUtils } from '@typescript-eslint/experimental-utils';
 
 export const RULE_NAME = 'prefix-exported-code';
 
-const createRule = ESLintUtils.RuleCreator(name => `https://example.com/rule/${name}`);
+const createRule = ESLintUtils.RuleCreator(name => `https://github.com/katoid/eslint/tree/main/docs/rules/${name}.md`);
 
 // Type: RuleModule<"uppercase", ...>
 export const rule = createRule({
@@ -32,7 +32,7 @@ export const rule = createRule({
                 context.report({
                     node,
                     messageId: 'ktdPrefixMessage',
-                    data: { name },
+                    data: { prefix },
                 });
             }
         }
@@ -69,10 +69,9 @@ export const rule = createRule({
         },
         messages: {
             ktdPrefixMessage:
-                'Exported class/interface/function/constant should be prefixed with {{prefix}}',
+                'Exported class/interface/function/constant should be prefixed with "{{prefix}}"',
         },
         type: 'suggestion',
-
         schema: [
             {
                 type: 'object',
