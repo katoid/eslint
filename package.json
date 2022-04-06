@@ -6,7 +6,8 @@
     "keywords": [
         "katoid",
         "eslint",
-        "eslintplugin"
+        "eslintplugin",
+        "eslintplugin-prefix-code"
     ],
     "bugs": {
         "url": "https://github.com/katoid/eslint/issues"
