@@ -1,13 +1,18 @@
 import { createRule } from '../utils/create-eslint-rule';
 
 export const RULE_NAME = 'prefix-exported-code';
+type Types = 'class' | 'interface' | 'function' | 'variable';
 
-// Type: RuleModule<"uppercase", ...>
 export const rule = createRule({
     name: RULE_NAME,
-    defaultOptions: [{ prefix: '' }],
-    create(context, [{ prefix }]) {
+    defaultOptions: [{prefix: '', types: []} as { prefix: string, types?: Types[] }],
+    create(context, [{prefix, types}]) {
         prefix = prefix || '';
+        types = types || [];
+
+        const targetTypes: { [P in Types]?: 1 } = types.length === 0
+            ? {class: 1, interface: 1, function: 1, variable: 1}
+            : types.reduce((acc, cur) => ({...acc, [cur]: 1}), {})
 
         function getModuleExportName(node: any): string {
             if (node.type === 'Identifier') {
@@ -31,23 +36,23 @@ export const rule = createRule({
                 context.report({
                     node,
                     messageId: 'ktdPrefixMessage',
-                    data: { prefix },
+                    data: {prefix},
                 });
             }
         }
 
         return {
             ExportNamedDeclaration(node) {
-                const { declaration } = node;
+                const {declaration} = node;
 
                 if (declaration) {
                     if (
-                        declaration.type === 'FunctionDeclaration' ||
-                        declaration.type === 'ClassDeclaration' ||
-                        declaration.type === 'TSInterfaceDeclaration'
+                        (targetTypes['function'] && declaration.type === 'FunctionDeclaration') ||
+                        (targetTypes['class'] && declaration.type === 'ClassDeclaration') ||
+                        (targetTypes['interface'] && declaration.type === 'TSInterfaceDeclaration')
                     ) {
                         checkExportedName(declaration.id);
-                    } else if (declaration.type === 'VariableDeclaration') {
+                    } else if (targetTypes['variable'] && declaration.type === 'VariableDeclaration') {
                         context
                             .getDeclaredVariables(declaration)
                             .map(v => v.defs.find(d => d.parent === declaration))
@@ -55,7 +60,6 @@ export const rule = createRule({
                             .forEach(checkExportedName);
                     }
                 } else {
-                    console.log('Else specifiers', node.specifiers);
                     node.specifiers.map(s => s.exported).forEach(checkExportedName);
                 }
             },
@@ -75,8 +79,12 @@ export const rule = createRule({
             {
                 type: 'object',
                 properties: {
-                    prefix: {
-                        oneOf: [{ type: 'string' }, { type: 'array' }],
+                    prefix: {type: 'string'},
+                    types: {
+                        type: 'array',
+                        items: {
+                            enum: ['class', 'interface', 'function', 'variable']
+                        }
                     },
                 },
                 additionalProperties: false,
